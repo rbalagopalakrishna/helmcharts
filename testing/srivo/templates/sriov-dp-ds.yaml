@@ -1,0 +1,84 @@
+{{/*
+Copyright 2019 The Openstack-Helm Authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/}}
+
+{{- if .Values.manifests.sriov_device_plugin_ds }}
+{{- $envAll := . }}
+{{- $labels := tuple $envAll "sriovdp" "node" | include "helm-toolkit.snippets.kubernetes_metadata_labels" -}}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.conf.serviceAccountName }}
+  namespace: {{ .Values.conf.namespace }}
+
+
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: kube-sriov-device-plugin-amd64
+  namespace: {{ .Values.conf.namespace }}
+  labels:
+{{ $labels | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+{{ $labels | indent 6 }}
+  template:
+    metadata:
+      labels:
+{{ $labels | indent 8 }}
+    spec:
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      serviceAccountName: {{ .Values.conf.serviceAccountName }}
+      containers:
+      - name: kube-sriovdp
+        image: nfvpe/sriov-device-plugin:latest
+        args:
+        - --log-level=10
+        securityContext:
+          privileged: false
+        volumeMounts:
+        - name: devicesock
+          mountPath: /var/lib/kubelet/device-plugins/
+          readOnly: false
+        - name: sysfs
+          mountPath: /sys
+          readOnly: true
+        - name: config
+          mountPath: /etc/pcidp/config.json
+          subPath: "config.json"
+      volumes:
+        - name: devicesock
+          hostPath:
+            path: /var/lib/kubelet/device-plugins/
+        - name: sysfs
+          hostPath:
+            path: /sys
+        - name: config
+          configMap:
+            name: sriov-device-plugin-config
+            items:
+            - key: "config.json"
+              path: "config.json"
+{{- end }}

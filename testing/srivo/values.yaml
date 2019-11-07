@@ -1,0 +1,76 @@
+# Default values for mychart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+pod:
+  resources:
+    enabled: false
+    sriov_cni:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "1024Mi"
+        cpu: "2000m"
+
+
+conf:
+  serviceAccountName: sriov-device-plugin
+  namespace: kube-system
+  sdp_config:
+    resourceList:
+    - resourceName: intel_sriov_netdevice
+      selectors:
+        vendors:
+        - '8086'
+        devices:
+        - 154c
+        - 10ed
+        drivers:
+        - i40evf
+        - ixgbevf
+    - resourceName: intel_sriov_dpdk
+      selectors:
+        vendors:
+        - '8086'
+        devices:
+        - 154c
+        - 10ed
+        drivers:
+        - vfio-pci
+        pfNames:
+        - enp0s0f0
+        - enp2s2f1
+    - resourceName: mlnx_sriov_rdma
+      isRdma: true
+      selectors:
+        vendors:
+        - 15b3
+        devices:
+        - '1018'
+        drivers:
+        - mlx5_ib
+  net_attach_defs:
+    - name: 10-intel-sriovnet-device
+      namespace: kube-system
+      sdp_resourceName: intel.com/intel_sriov_netdevice
+      cni_conf:
+        name: sriov-network
+        cniVersion: 0.3.1
+        type: sriov
+        ipam:
+          type: host-local
+          subnet: 10.56.217.0/24
+          rangeStart: 10.56.217.171
+          rangeEnd: 10.56.217.181
+          routes:
+            - dst: 0.0.0.0/0
+        gateway: 10.56.217.1
+
+manifests:
+  net_attach_defs_sriov: true
+  sriov_device_plugin_ds: true
+  crd_sriov_device_plugin: true
+  configmap_sriov_device_plugin: true
+  kube_sriov_cni_ds: true
