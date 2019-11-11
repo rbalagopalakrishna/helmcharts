@@ -18,6 +18,10 @@ existingConfigMap: metallb-config
 # Refer to https://metallb.universe.tf/configuration/ for
 # available options.
 configInline:
+  address-pools:
+  - name:
+    protocol:
+    addresses:
 
 rbac:
   # create specifies whether to install and use RBAC rules.
