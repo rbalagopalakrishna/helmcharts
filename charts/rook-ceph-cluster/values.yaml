@@ -1,0 +1,9 @@
+# Default values for rook-ceph-cluster.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+Release:
+  Namespace: rook-ceph 
+  
+config:
+  databaseSizeMB: "1024"
+  journalSizeMB: "1024"
