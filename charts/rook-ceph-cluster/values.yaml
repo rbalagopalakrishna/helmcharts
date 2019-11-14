@@ -3,6 +3,9 @@
 # Declare variables to be passed into your templates.
 Release:
   Namespace: rook-ceph 
+
+mon:
+ count: 1
   
 config:
   databaseSizeMB: "1024"
