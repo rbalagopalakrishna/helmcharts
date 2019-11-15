@@ -18,4 +18,4 @@ spec:
     enabled: false  # requires Prometheus to be pre-installed
     rulesNamespace: rook-ceph
   network:
-    hostNetwork: false
+    hostNetwork: true
