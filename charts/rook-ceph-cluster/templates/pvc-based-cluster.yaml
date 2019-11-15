@@ -4,29 +4,21 @@ metadata:
   name: rook-ceph
   namespace: rook-ceph
 spec:
+  cephVersion:
+    image: ceph/ceph:v14.2.4-20190917
   dataDirHostPath: /var/lib/rook
   mon:
     count: 3
-    volumeClaimTemplate:
-      spec:
-        storageClassName: local-storage
-        resources:
-          requests:
-            storage: 10Gi
-  storage:
-   storageClassDeviceSets:
-    - name: set1
-      count: 3
-      portable: false
-      volumeClaimTemplates:
-      - metadata:
-          name: data
-        spec:
-          resources:
-            requests:
-              storage: 10Gi
-          # IMPORTANT: Change the storage class depending on your environment (e.g. local-storage, gp2)
-          storageClassName: local-storage
-          volumeMode: Block
-          accessModes:
-            - ReadWriteOnce
+    allowMultiplePerNode: true
+  dashboard:
+    enabled: true
+  storage: # cluster level storage configuration and selection
+    useAllNodes: true
+    useAllDevices: false
+    config:
+      # The default and recommended storeType is dynamically set to bluestore for devices and filestore for directories.
+      # Set the storeType explicitly only if it is required not to use the default.
+      # storeType: bluestore
+      # metadataDevice: "md0" # specify a non-rotational storage so ceph-volume will use it as block db device of bluestore.
+      databaseSizeMB: "1024" # uncomment if the disks are smaller than 100 GB
+      journalSizeMB: "1024"  # uncomment if the disks are 20 GB or smaller
