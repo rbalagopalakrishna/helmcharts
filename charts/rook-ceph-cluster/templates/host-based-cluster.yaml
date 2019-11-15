@@ -10,12 +10,11 @@ spec:
   dataDirHostPath: /var/lib/rook
   mon:
     count: {{ .Values.mon.count }}
-    allowMultiplePerNode: false
   dashboard:
     enabled: true
-    ssl: true
-  monitoring:
-    enabled: false  # requires Prometheus to be pre-installed
-    rulesNamespace: rook-ceph
-  network:
-    hostNetwork: true
+  storage:
+    useAllNodes: true
+    useAllDevices: false
+    # Important: Directories should only be used in pre-production environments
+    directories:
+    - path: /var/lib/rook
