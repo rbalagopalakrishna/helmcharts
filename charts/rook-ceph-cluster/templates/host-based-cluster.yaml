@@ -5,16 +5,17 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   cephVersion:
-    # For the latest ceph images, see https://hub.docker.com/r/ceph/ceph/tags
     image: ceph/ceph:v14.2.4-20190917
+    allowUnsupported: false
   dataDirHostPath: /var/lib/rook
   mon:
     count: {{ .Values.mon.count }}
+    allowMultiplePerNode: false
   dashboard:
     enabled: true
-  storage:
-    useAllNodes: true
-    useAllDevices: false
-    # Important: Directories should only be used in pre-production environments
-    directories:
-    - path: /var/lib/rook
+    ssl: true
+  monitoring:
+    enabled: false  # requires Prometheus to be pre-installed
+    rulesNamespace: rook-ceph
+  network:
+    hostNetwork: false
