@@ -116,7 +116,7 @@ spec:
             - |
               #!/bin/bash
               sed "s|__KUBERNETES_NODE_NAME__|\${KUBERNETES_NODE_NAME}|g" /usr/src/multus-cni/images/00-multus.conf.template  > /usr/src/multus-cni/images/00-multus.conf
-              /entrypoint.sh --multus-conf-file=/usr/src/multus-cni/images/00-multus.conf
+              /entrypoint.sh --multus-conf-file=/usr/src/multus-cni/images/00-multus.conf --multus-log-level=debug --multus-log-file=/var/log/multus.log
           resources:
             requests:
               cpu: 250m
