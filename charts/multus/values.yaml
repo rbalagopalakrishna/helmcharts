@@ -50,7 +50,7 @@ conf:
     # https://github.com/intel/multus-cni/blob/master/doc/configuration.md
     name: multus-cni-network
     type: multus
-    kubeconfig: /home/bala/.kube/config
+    kubeconfig: /etc/cni/net.d/multus.d/multus.kubeconfig
     confDir: /etc/cni/multus/net.d
     cniDir: /var/lib/cni/multus
     binDir: /opt/cni/bin
