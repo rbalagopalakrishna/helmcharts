@@ -54,7 +54,7 @@ conf:
     confDir: /etc/cni/multus/net.d
     cniDir: /var/lib/cni/multus
     binDir: /opt/cni/bin
-    logLevel: panic
+    logLevel: debug
     capabilities:
       portMappings: true
     readinessindicatorfile: ""
