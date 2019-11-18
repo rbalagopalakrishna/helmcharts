@@ -65,27 +65,36 @@ conf:
     systemNamespaces: ["kube-system"]
     multusNamespace: kube-system
   net_attach_defs:
-    - name: 10-calico
+    - name: macvlan-conf-1
       namespace: kube-system
       cni_conf:
         cniVersion: 0.3.0
-        plugins:
-        - type: calico
-          log_level: info
-          etcd_endpoints: __ETCD_ENDPOINTS__
-          etcd_key_file: __ETCD_KEY_FILE__
-          etcd_cert_file: __ETCD_CERT_FILE__
-          etcd_ca_cert_file: __ETCD_CA_CERT_FILE__
-          ipam:
-            type: calico-ipam
-          policy:
-            type: k8s
-          kubernetes:
-            kubeconfig: __KUBECONFIG_FILEPATH__
-        - type: portmap
-          snat: true
-          capabilities:
-            portMappings: true
+        type: macvlan
+        master: eth1
+        mode: bridge
+        ipam:
+          type: host-local
+          ranges:
+            subnet: "12.10.0.0/16"
+            rangeStart: "12.10.1.20"
+            rangeEnd: "12.10.3.50"
+#        plugins:
+#        - type: calico
+#          log_level: info
+#          etcd_endpoints: __ETCD_ENDPOINTS__
+#          etcd_key_file: __ETCD_KEY_FILE__
+#          etcd_cert_file: __ETCD_CERT_FILE__
+#          etcd_ca_cert_file: __ETCD_CA_CERT_FILE__
+#          ipam:
+#            type: calico-ipam
+#          policy:
+#            type: k8s
+#          kubernetes:
+#            kubeconfig: __KUBECONFIG_FILEPATH__
+#        - type: portmap
+#          snat: true
+#          capabilities:
+#            portMappings: true
 
 manifests:
   configmap_etc: true
