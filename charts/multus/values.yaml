@@ -91,4 +91,4 @@ manifests:
   configmap_etc: true
   daemonset_multus: true
   crd_net_attach_def: true
-  net_attach_defs: true
+  net_attach_defs: false
