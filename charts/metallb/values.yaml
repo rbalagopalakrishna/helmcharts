@@ -19,14 +19,14 @@
 # available options.
 configInline:
   peers:
-  - peer-address: 10.0.0.1
-    peer-asn: 64512
-    my-asn: 64512
+  - peer-address: 10.10.93.129
+    peer-asn: 64501
+    my-asn: 64500
   address-pools:
   - name: default
     protocol: bgp
     addresses:
-    - 198.51.100.0/24
+    - 10.10.93.192/27
 rbac:
   # create specifies whether to install and use RBAC rules.
   create: true
