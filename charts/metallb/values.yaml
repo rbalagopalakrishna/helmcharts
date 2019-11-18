@@ -18,11 +18,15 @@ existingConfigMap: metallb-config
 # Refer to https://metallb.universe.tf/configuration/ for
 # available options.
 configInline:
+  peers:
+  - peer-address: 10.0.0.1
+    peer-asn: 64512
+    my-asn: 64512
   address-pools:
-  - name:
-    protocol:
+  - name: default
+    protocol: bgp
     addresses:
-
+    - 198.51.100.0/24
 rbac:
   # create specifies whether to install and use RBAC rules.
   create: true
