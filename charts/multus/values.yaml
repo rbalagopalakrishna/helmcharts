@@ -56,6 +56,7 @@ conf:
     cniDir: /var/lib/cni/multus
     binDir: /opt/cni/bin
     logLevel: debug
+    LogFile: /var/log/multus.log
     capabilities:
       portMappings: true
     readinessindicatorfile: ""
@@ -70,36 +71,36 @@ conf:
       namespace: kube-system
       cni_conf:
         cniVersion: 0.3.0
-        type: macvlan
-        master: eth1
-        mode: bridge
-        ipam:
-          type: host-local
-          ranges:
-            subnet: 10.10.0.0/16
-            rangeStart: 10.10.1.20
-            rangeEnd: 10.10.3.50
-            gateway: 10.10.0.254
-#        plugins:
-#        - type: calico
-#          log_level: info
-#          etcd_endpoints: https://192.168.122.59:2379
-#          etcd_key_file: /etc/kubernetes/pki/etcd/server.key
-#          etcd_cert_file: /etc/kubernetes/pki/etcd/server.crt
-#          etcd_ca_cert_file: /etc/kubernetes/pki/etcd/ca.crt
-#          ipam:
-#            type: calico-ipam
-#          policy:
-#            type: k8s
-#          kubernetes:
-#            kubeconfig: /home/bala/.kube/config
-#        - type: portmap
-#          snat: true
-#          capabilities:
-#            portMappings: true
-#
+#        type: macvlan
+#        master: eth1
+#        mode: bridge
+#        ipam:
+#          type: host-local
+#          ranges:
+#            subnet: 10.10.0.0/16
+#            rangeStart: 10.10.1.20
+#            rangeEnd: 10.10.3.50
+#            gateway: 10.10.0.254
+        plugins:
+        - type: calico
+          log_level: debug
+          etcd_endpoints: https://192.168.122.59:2379
+          etcd_key_file: /etc/kubernetes/pki/etcd/server.key
+          etcd_cert_file: /etc/kubernetes/pki/etcd/server.crt
+          etcd_ca_cert_file: /etc/kubernetes/pki/etcd/ca.crt
+          ipam:
+            type: calico-ipam
+          policy:
+            type: k8s
+          kubernetes:
+            kubeconfig: /home/bala/.kube/config
+        - type: portmap
+          snat: true
+          capabilities:
+            portMappings: true
+
 manifests:
   configmap_etc: true
   daemonset_multus: true
   crd_net_attach_def: true
-  net_attach_defs: true
+  net_attach_defs: false
