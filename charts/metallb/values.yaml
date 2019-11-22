@@ -27,6 +27,9 @@ configInline:
     protocol: bgp
     addresses:
     - 10.10.93.192/27
+
+service:
+  port: 7472 
 rbac:
   # create specifies whether to install and use RBAC rules.
   create: true
