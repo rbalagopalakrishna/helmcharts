@@ -1,0 +1,214 @@
+# Copyright 2017 AT&T Intellectual Property.  All other rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Default values for divingbell.
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+proxy:
+  enable: true
+
+proxy_server:
+  https_proxy: 'http://one.proxy.att.com:8888'
+  http_proxy: 'http://one.proxy.att.com:8888'
+
+
+images:
+  divingbell: 'ubuntu:16.04'
+  pull_policy: IfNotPresent
+
+conf:
+  chroot_mnt_path: '/mnt'
+  log_colors: False
+  apt:
+    blacklistpkgs:
+    - telnetd
+    - inetutils-telnetd
+    - telnetd-ssl
+    - nis
+    - ntpdate
+#  perm:
+#    rerun_policy: always
+#    86400 = 1 day
+#    rerun_interval: 86400
+#    paths:
+#    -
+#      path: '/boot/System.map-*'
+#      owner: 'root'
+#      group: 'root'
+#      permissions: '0640'
+#    -
+#      path: '/etc/shadow'
+#      owner: 'root'
+#      group: 'shadow'
+#      permissions: '0640'
+#    -
+#      path: '/etc/gshadow'
+#      owner: 'root'
+#      group: 'shadow'
+#      permissions: '0640'
+#    -
+#      path: '/etc/passwd'
+#      owner: 'root'
+#      group: 'root'
+#      permissions: '0644'
+#    -
+#      path: '/etc/group'
+#      owner: 'root'
+#      group: 'root'
+#      permissions: '0644'
+#    -
+#      path: '/var/log/kern.log'
+#      owner: 'syslog'
+#      group: 'adm'
+#      permissions: '0640'
+#    -
+#      path: '/var/log/auth.log'
+#      owner: 'syslog'
+#      group: 'adm'
+#      permissions: '0640'
+#    -
+#      path: '/var/log/syslog'
+#      owner: 'syslog'
+#      group: 'adm'
+#      permissions: '0640'
+
+##  data.values.conf.sysctl
+#  sysctl:
+#    fs.suid_dumpable: '0'
+##  data.values.conf.limits
+#  limits:
+#    nofile:
+#      domain: 'root'
+#      type: 'soft'
+#      item: 'nofile'
+#      value: '101'
+#    core_dump:
+#      domain: '0:'
+#      type: 'hard'
+#      item: 'core'
+#      value: 0
+pod:
+  lifecycle:
+    upgrades:
+      daemonsets:
+        pod_replacement_strategy: RollingUpdate
+        ethtool:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        mounts:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        uamlite:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        sysctl:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        apt:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        limits:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        perm:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+        exec:
+          enabled: true
+          min_ready_seconds: 0
+          max_unavailable: 100%
+  resources:
+    enabled: false
+    apparmor:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    ethtool:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    mounts:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    uamlite:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    sysctl:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    limits:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    perm:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    apt:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    exec:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+
+manifests:
+  daemonset_ethtool: true
+  daemonset_mounts: true
+  daemonset_uamlite: true
+  daemonset_sysctl: true
+  daemonset_limits: true
+  daemonset_apt: true
+  daemonset_perm: true
+  daemonset_exec: true
+  daemonset_apparmor: true
