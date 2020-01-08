@@ -16,12 +16,11 @@
 # This is a YAML-formatted file.
 # Declare name/value pairs to be passed into your templates.
 # name: value
-proxy:
-  enable: true
-
 proxy_server:
-  https_proxy: 'http://one.proxy.att.com:8888'
-  http_proxy: 'http://one.proxy.att.com:8888'
+  enable: false
+  https_proxy: ''
+  http_proxy: ''
+  no_proxy: ''
 
 
 images:
