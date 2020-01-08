@@ -44,12 +44,6 @@ load_package_list_with_versions(){
     set -x
 }
 
-{{- if .Values.proxy_server.enable }}
-export https_proxy={{ .Values.proxy_server.https_proxy }}
-export http_proxy={{ .Values.proxy_server.http_proxy }}
-export no_proxy={{ .Values.proxy_server.no_proxy }}
-{{ end }}
-
 ################################################
 #Stage 1
 #Collect data
